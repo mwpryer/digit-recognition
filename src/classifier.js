@@ -10,7 +10,7 @@ const classify = (data) => {
     });
 
     py.on("close", () => {
-      resolve(res);
+      resolve(res.trim());
     });
 
     py.on("error", (err) => {
