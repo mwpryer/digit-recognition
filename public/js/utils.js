@@ -8,20 +8,9 @@ function getPixelData(imageData) {
     for (let j = 0; j < cols; j++) {
       // Get index for pixel block
       const blockIdx = (i * rows + j) * 4;
-
+      // Use alpha channel for pixel value, normalize to 0-1
       const alpha = imageData.data[blockIdx + 3];
-      if (alpha === 0) {
-        // Transparent block, set to 0
-        pixels[i][j] = 0;
-      } else {
-        const red = imageData.data[blockIdx];
-        const green = imageData.data[blockIdx + 1];
-        const blue = imageData.data[blockIdx + 2];
-        // Average colour channels and normalize to range 0-1
-        const mean = (red + green + blue) / 3;
-        const intensity = (255 - mean) / 255;
-        pixels[i][j] = intensity;
-      }
+      pixels[i][j] = alpha / 255;
     }
   }
   return pixels;
