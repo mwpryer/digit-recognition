@@ -795,6 +795,10 @@ a, button, input, textarea, select{
   flex-grow: 1;
 }
 
+.font-normal{
+  font-weight: 400;
+}
+
 .font-bold{
   font-weight: 700;
 }
