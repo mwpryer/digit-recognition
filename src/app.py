@@ -1,6 +1,6 @@
 import os
 import requests
-import time
+import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -25,7 +25,7 @@ def index():
     try:
         r = requests.post(
             os.getenv("DB_URI"),
-            json={"sample": sample, "prediction": prediction, "date": int(time.time())},
+            json={"sample": sample, "prediction": prediction, "date": datetime.datetime.now().isoformat()},
         )
         r.raise_for_status()
     except requests.exceptions.HTTPError as err:
