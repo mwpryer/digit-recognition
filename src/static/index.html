@@ -1,125 +1,161 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Digit Recognition – Matt Pryer</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="static/assets/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="static/assets/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="static/assets/favicon-16x16.png" />
+    <title>Digit Recognition - Matt Pryer</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="static/assets/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="static/assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="static/assets/favicon-16x16.png"
+    />
     <link rel="manifest" href="static/manifest.json" />
     <link rel="stylesheet" href="static/css/style.css" />
     <script src="static/js/utils.js" defer></script>
     <script src="static/js/script.js" defer></script>
   </head>
-  <body class="flex flex-col min-h-screen text-base bg-gray-100 text-secondary">
-    <div class="container flex-grow mb-16">
-      <header class="pt-12 pb-6">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h1 class="mb-1 text-2xl font-black">
-              Digit Recognition <span role="img" aria-label="robot" class="font-normal">🤖</span>
-            </h1>
-            <span class="block text-sm text-tertiary">Published: <time datetime="2021-06-28">28/06/2021</time></span>
-          </div>
-          <a href="https://github.com/mwpryer/digit-recognition" target="_blank" rel="noopener noreferrer" class="btn">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 text-secondary">
-              <path
-                fill-rule="evenodd"
-                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
-              />
-            </svg>
-            <span>GitHub</span>
-          </a>
-        </div>
-      </header>
-      <hr class="mb-12 hr" />
-      <main>
-        <div class="p-6 mb-16 bg-white border-2 border-blue-600 rounded shadow">
-          <div class="flex items-center mb-6 space-x-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              class="w-6 text-blue-600"
+  <body
+    class="flex min-h-screen flex-col justify-between bg-gray-50 font-sans text-base text-gray-800 antialiased"
+  >
+    <main class="mx-auto w-min p-2 py-4 sm:py-12">
+      <div class="mb-6 sm:mb-12">
+        <h1 class="mb-3 text-xl font-bold text-gray-900">
+          Handwritten Digit Classifier
+        </h1>
+        <p>
+          This is an interface to a Convolutional Neural Network for classifying
+          handwritten digits trained on the
+          <a
+            href="http://yann.lecun.com/exdb/mnist/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-blue-800 hover:underline"
+            >MNIST dataset</a
+          >. You can draw any digit in the range 0-9 below and see the model's
+          prediction.
+        </p>
+      </div>
+      <!-- Digit recognition -->
+      <div class="space-y-2">
+        <!-- Input -->
+        <div class="flex flex-col gap-2 sm:flex-row">
+          <div
+            class="relative flex flex-col overflow-hidden rounded border bg-gray-100"
+          >
+            <div class="absolute right-2 top-2">
+              <button
+                type="button"
+                id="clear-btn"
+                class="btn btn--icon"
+                disabled
+              >
+                <svg
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  class="h-5 w-5"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"
+                  />
+                </svg>
+              </button>
+            </div>
+            <canvas
+              width="330"
+              height="330"
+              id="canvas"
+              class="block cursor-crosshair bg-white"
+            ></canvas>
+            <div
+              class="relative flex flex-grow items-center justify-center p-2"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <h2 class="text-xl">Information</h2>
+              <p class="py-2 text-sm text-gray-500">Your drawing</p>
+              <div class="absolute right-2">
+                <button type="button" id="predict-btn" class="btn">
+                  Predict
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <p class="mb-4">
-              This is an interface to a Convolutional Neural Network for classifying handwritten digits trained on the
-              <a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener noreferrer" class="link"
-                >MNIST dataset</a
-              >. You can draw any digit in the range 0-9 below and see the result of the prediction.
-            </p>
-            <p class="mb-2">Several preprocessing steps are carried out before the digit can be classified:</p>
-            <ul class="pl-5 space-y-1 list-disc list-outside sm:pl-12">
-              <li>The digit is scaled to a 200x200 image centered in a 280x280 image.</li>
-              <li>The digit is then downscaled to a 28x28 image.</li>
-              <li>
-                Finally, pixel intensities of the digit are taken by averaging over the RGB channels and normalizing to
-                the range 0-1.
-              </li>
-            </ul>
+          <div class="flex gap-2 sm:flex-col">
+            <div
+              class="flex flex-col overflow-hidden rounded border bg-gray-100"
+            >
+              <canvas
+                width="160"
+                height="160"
+                id="canvas2"
+                class="block bg-white"
+              ></canvas>
+              <p class="py-1 text-center text-sm text-gray-500">Resized</p>
+            </div>
+            <div
+              class="flex flex-col overflow-hidden rounded border bg-gray-100"
+            >
+              <canvas
+                width="160"
+                height="160"
+                id="canvas3"
+                class="block bg-white"
+              ></canvas>
+              <p class="py-1 text-center text-sm text-gray-500">Downscaled</p>
+            </div>
           </div>
         </div>
-        <div class="m-auto w-min">
-          <div class="flex flex-col justify-center gap-4 mb-4 sm:items-stretch sm:flex-row">
-            <div class="overflow-hidden bg-gray-200 border border-gray-300 rounded-sm">
-              <canvas width="320" height="320" id="canvas" class="block bg-white cursor-crosshair"></canvas>
-              <div class="p-2">
-                <button type="button" id="clear-btn" class="btn">Clear</button>
-                <button type="button" id="predict-btn" class="btn-primary">Predict</button>
-              </div>
-            </div>
-            <div class="flex justify-between gap-4 sm:gap-2 sm:flex-col">
-              <div class="overflow-hidden bg-gray-200 border border-gray-300 rounded-sm">
-                <canvas width="150" height="150" id="canvas2" class="block bg-white"></canvas>
-                <p class="py-1 text-sm italic text-center text-tertiary">Normalized</p>
-              </div>
-              <div class="overflow-hidden bg-gray-200 border border-gray-300 rounded-sm">
-                <canvas width="150" height="150" id="canvas3" class="block bg-white"></canvas>
-                <p class="py-1 text-sm italic text-center text-tertiary">Downscaled</p>
-              </div>
-            </div>
-          </div>
+        <!-- Output -->
+        <div class="flex flex-col overflow-hidden rounded border bg-gray-100">
           <div
             id="result-container"
-            class="flex items-center justify-center h-24 p-2 overflow-hidden bg-gray-200 border border-gray-300 rounded-sm"
+            class="flex h-24 items-center justify-center bg-white p-4"
           >
-            <div class="flex items-center justify-center">
-              <div id="loading-spinner" class="hidden lds-ellipsis">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-              <span id="result" class="text-6xl font-bold leading-none text-center"></span>
-              <span id="error" class="text-xl font-bold leading-none text-center"></span>
+            <div id="loading-spinner" class="lds-ellipsis hidden">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
             </div>
+            <span id="result" class="text-6xl font-bold text-gray-800"></span>
+            <span
+              id="error"
+              class="text-center text-lg font-bold text-gray-800"
+            ></span>
           </div>
+          <p class="py-1 text-center text-sm text-gray-500">Result</p>
         </div>
-      </main>
-    </div>
-    <footer class="mt-8 text-sm text-gray-500 bg-gray-900 border-t border-gray-800">
-      <div class="container py-8 text-center">
-        <span>
-          Made by
-          <span aria-label="wizard" role="img">🧙</span>
-          <a class="link text-blue-400" href="https://mattpryer.com" rel="noopener noreferrer" target="_blank">
-            Matt Pryer
-          </a>
-        </span>
       </div>
+    </main>
+    <footer class="py-4 text-center">
+      <span class="text-sm text-gray-500">
+        Made by
+        <a
+          href="https://mattpryer.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-semibold"
+        >
+          Matt Pryer
+        </a>
+      </span>
     </footer>
   </body>
 </html>

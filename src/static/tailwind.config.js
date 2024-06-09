@@ -1,32 +1,16 @@
-/** @type {import('tailwindcss').Config} */
-const { fontFamily } = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
 
-module.exports = {
-  content: ["*.{html,js}"],
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html"],
   theme: {
-    fontFamily: {
-      sans: ["Inter", ...fontFamily.sans],
-    },
-    container: {
-      center: true,
-      padding: "1rem",
-      screens: {
-        sm: "768px",
-        md: "768px",
-        lg: "768px",
-        xl: "768px",
-      },
-    },
     extend: {
-      cursor: {
-        crosshair: "crosshair",
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
+      colors: {
+        gray: colors.slate,
       },
     },
   },
-  variants: {
-    extend: {
-      ringWidth: ["focus-visible"],
-    },
-  },
-  plugins: [],
 };
